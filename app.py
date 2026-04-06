@@ -161,5 +161,17 @@ with tab3:
                 st.plotly_chart(fig2, use_container_width=True)
             else:
                 st.info("Selected model does not support feature importance visualization directly.")
+        
+        st.markdown("---")
+        st.markdown("**Sensor Correlation Heatmap**")
+        
+        # Select numeric columns for correlation (excluding ID columns)
+        numeric_cols = [col for col in df.columns if pd.api.types.is_numeric_dtype(df[col]) and col not in ['machine_id', 'timestamp']]
+        corr_matrix = df[numeric_cols].corr()
+        
+        fig3 = px.imshow(corr_matrix, text_auto=".2f", aspect="auto", color_continuous_scale='RdBu_r', 
+                         title="Correlation Between Different Sensors and Failure Status")
+        st.plotly_chart(fig3, use_container_width=True)
+        
     else:
         st.info("Run the data generation script to see historical data visualizations.")
